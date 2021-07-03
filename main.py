@@ -1,16 +1,9 @@
-from flask import Flask
-
 import settings
+from app.app import create_app
 from app.ext.log import logger
 
-app = Flask(__name__)
-
-
-@app.route('/')
-def hello():
-    return 'Hello'
-
+app = create_app()
 
 if __name__ == '__main__':
-    logger.info(f'Run appliation version={settings.VERSION}')
+    logger.info(f'Run application version={settings.VERSION}')
     app.run(debug=True)

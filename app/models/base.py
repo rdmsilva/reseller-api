@@ -3,6 +3,8 @@ from contextlib import contextmanager
 from sqlalchemy import create_engine, Column, DateTime, Boolean
 from sqlalchemy.orm import sessionmaker, scoped_session
 
+from app.ext.log import logger
+
 database_uri = "mysql+pymysql://dev:dev@localhost/reseller-db"
 
 engine = create_engine(database_uri)
@@ -17,12 +19,11 @@ def async_session() -> 'Session':
     try:
         yield session
         session.commit()
+        session.flush()
     except Exception as e:
-        # logger.error(e)
+        logger.error(e)
         session.rollback()
         raise
-    finally:
-        session.close()
 
 
 class BaseModel:
