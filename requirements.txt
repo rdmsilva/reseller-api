@@ -1,0 +1,5 @@
+sqlalchemy=1.4.20
+flask=2.0.1
+alembic==1.6.5
+pymysql==1.0.2
+sqlalchemy-utils==0.37.8
