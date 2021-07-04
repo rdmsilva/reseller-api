@@ -6,8 +6,9 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy_serializer import SerializerMixin
 
 from app.ext.log import logger
+from settings import DB_URI
 
-database_uri = "mysql+pymysql://dev:dev@localhost/reseller-db"
+database_uri = DB_URI
 
 engine = create_engine(database_uri)
 

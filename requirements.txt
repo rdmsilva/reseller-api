@@ -2,6 +2,10 @@ sqlalchemy==1.4.20
 flask==2.0.1
 alembic==1.6.5
 pymysql==1.0.2
-SQLAlchemy-serializer
-sqlalchemy_utils
-cryptography
+SQLAlchemy-serializer==1.4.1
+sqlalchemy_utils==0.37.8
+cryptography==3.4.7
+marshmallow
+sqlalchemy-diff
+alembic-verify
+mock-alchemy==0.2.2

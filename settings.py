@@ -1,5 +1,14 @@
+import os
+
+from config import config_app
+
 PROJECT = 'reseller-api'
 VERSION = '0.0.1'
 LOG_LEVEL = 'INFO'
-DB_URI = "mysql+pymysql://dev:dev@localhost/reseller-db"
-ENCRYPTED_KEY = '393b3126-4fe4-4698-9610-c6b73b4c276c'
+
+ENV = os.getenv('env', 'dev')
+
+ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
+
+DB_URI = config_app[ENV].DB_URI
+ENCRYPTED_KEY = config_app[ENV].ENCRYPTED_KEY

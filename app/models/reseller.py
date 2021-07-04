@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String
 from sqlalchemy.orm import declarative_base
-from sqlalchemy_utils import EncryptedType
+from sqlalchemy_utils import StringEncryptedType
 
 from app.models.base import BaseModel
 from settings import ENCRYPTED_KEY
@@ -16,4 +16,4 @@ class Reseller(Base, BaseModel):
     cpf = Column(String(11), primary_key=True, nullable=False)
     name = Column(String(50), nullable=False)
     email = Column(String(50), nullable=False)
-    password = Column(EncryptedType(String, ENCRYPTED_KEY), nullable=False)
+    password = Column(StringEncryptedType(String, ENCRYPTED_KEY), nullable=False)
