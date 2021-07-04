@@ -13,7 +13,7 @@ class Reseller(Base, BaseModel):
 
     serialize_only = ('cpf', 'name', 'email')
 
-    cpf = Column(String(11), primary_key=True, nullable=False)
+    cpf = Column(StringEncryptedType(String, ENCRYPTED_KEY), primary_key=True, nullable=False)
     name = Column(String(50), nullable=False)
     email = Column(String(50), nullable=False)
     password = Column(StringEncryptedType(String, ENCRYPTED_KEY), nullable=False)
