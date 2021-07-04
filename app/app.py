@@ -1,13 +1,15 @@
 from flask import Flask
 
-from app.views.reseller import reseller
+from app.views.auth.auth import auth
+from app.views.reseller.reseller import reseller
 
 
-def register_blueprint(app):
+def blueprints(app):
+    app.register_blueprint(auth)
     app.register_blueprint(reseller)
 
 
 def create_app():
     app = Flask(__name__)
-    register_blueprint(app)
+    blueprints(app)
     return app

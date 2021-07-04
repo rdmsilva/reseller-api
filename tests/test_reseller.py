@@ -7,7 +7,7 @@ from mock_alchemy.mocking import UnifiedAlchemyMagicMock
 from tests.base_test import SetUpTestCase
 
 
-class BasicTests(SetUpTestCase):
+class ResellerTest(SetUpTestCase):
     reseller_route = '/v1/reseller'
 
     default_data = {"name": "Rafael Dantas",
