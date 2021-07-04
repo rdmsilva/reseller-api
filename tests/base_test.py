@@ -12,3 +12,6 @@ class SetUpTestCase(TestCase):
         app = create_app()
         app.config['DEBUG'] = True
         cls.app = app.test_client()
+
+    def setUp(self) -> None:
+        print(self._testMethodName)

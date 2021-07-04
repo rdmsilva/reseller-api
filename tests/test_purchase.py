@@ -19,5 +19,4 @@ class PurchaseTest(SetUpTestCase):
     def test_new_purchase(self, session):
         with self.app as client:
             response = client.post(self.reseller_route, json={'data': self.default_data})
-            print(response.data)
             self.assertEqual(response.status_code, HTTPStatus.CREATED)

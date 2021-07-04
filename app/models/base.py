@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, Column, DateTime, Boolean
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy_serializer import SerializerMixin
 
-from app.ext.log import logger
+from log import logger
 from settings import DB_URI
 
 database_uri = DB_URI

@@ -1,6 +1,6 @@
 import settings
 from app.app import create_app
-from app.ext.log import logger
+from log import logger
 
 app = create_app()
 

@@ -8,7 +8,8 @@ from alembic import context
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 import settings
-from app.models.reseller import Base
+from app.models.purchase import BasePurchase
+from app.models.reseller import BaseReseller
 
 config = context.config
 
@@ -22,7 +23,7 @@ fileConfig(config.config_file_name)
 # target_metadata = mymodel.Base.metadata
 # from flask import current_app
 config.set_main_option('sqlalchemy.url', settings.DB_URI)
-target_metadata = Base.metadata
+target_metadata = [BaseReseller.metadata, BasePurchase.metadata]
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

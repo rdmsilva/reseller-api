@@ -1,23 +1,21 @@
-from datetime import datetime
 from http import HTTPStatus
 
 from flask import Blueprint, request
 from flask import jsonify
 from sqlalchemy.exc import IntegrityError
 
-from app.models.base import async_session
 from app.models.reseller import Reseller
 from app.schemas.reseller import ResellerSchema
+from app.services.reseller import get_reseller_by_cpf, save_new_reseller
 
 reseller = Blueprint('reseller', __name__, url_prefix='/v1')
 
 
-@reseller.route('/reseller/<id>', methods=['GET'])
-def get_reseller(id):
-    with async_session() as session:
-        result = session.query(Reseller).filter_by(cpf=id).first()
-        if not result:
-            return jsonify({'message': 'reseller not found'}), HTTPStatus.NOT_FOUND
+@reseller.route('/reseller/<cpf>', methods=['GET'])
+def get_reseller(cpf):
+    result = get_reseller_by_cpf(cpf)
+    if not result:
+        return jsonify({'message': 'reseller not found'}), HTTPStatus.NOT_FOUND
     return jsonify(result.to_dict())
 
 
@@ -33,10 +31,9 @@ def post_reseller():
         if errors:
             return jsonify({'message': errors}), HTTPStatus.BAD_REQUEST
 
-        reseller = Reseller(**data)
-        reseller.created_at = datetime.now()
-        reseller.save()
+        reseller_id = save_new_reseller(Reseller(**data))
+
     except IntegrityError as err:
         return jsonify({'message': err.orig.args[1]}), HTTPStatus.CONFLICT
 
-    return jsonify({'message': 'saved'}), HTTPStatus.CREATED
+    return jsonify({'message': 'saved', 'id': reseller_id}), HTTPStatus.CREATED
