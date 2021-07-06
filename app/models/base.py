@@ -21,7 +21,7 @@ class CustomSerializerMixin(SerializerMixin):
 
 
 @contextmanager
-def async_session() -> 'Session':
+def context_session() -> 'Session':
     session = Session()
     try:
         yield session
@@ -35,16 +35,13 @@ def async_session() -> 'Session':
 
 class BaseModel(CustomSerializerMixin):
     created_at = Column(DateTime, nullable=False)
-    updated_at = Column(DateTime, nullable=True)
-    deleted = Column(Boolean, default=False)
-    deleted_at = Column(DateTime, nullable=True)
 
     def save(self):
-        with async_session() as session:
+        with context_session() as session:
             session.add(self)
         return self
 
     def delete(self):
-        with async_session() as session:
+        with context_session() as session:
             session.delete(self)
         return self

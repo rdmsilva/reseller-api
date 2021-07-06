@@ -9,3 +9,5 @@ marshmallow
 sqlalchemy-diff
 alembic-verify
 mock-alchemy==0.2.2
+PyJWT
+flask-jwt-extended

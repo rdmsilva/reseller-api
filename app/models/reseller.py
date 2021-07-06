@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, Index
 from sqlalchemy.orm import declarative_base
 from sqlalchemy_utils import StringEncryptedType
 from sqlalchemy_utils.types.encrypted.encrypted_type import AesEngine
@@ -15,7 +15,10 @@ class Reseller(BaseReseller, BaseModel):
     serialize_only = ('cpf', 'name', 'email')
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    cpf = Column(StringEncryptedType(Integer, length=255, key=ENCRYPTED_KEY, engine=AesEngine), primary_key=True, nullable=False)
+    cpf = Column(StringEncryptedType(Integer, length=255, key=ENCRYPTED_KEY, engine=AesEngine), nullable=False, unique=True)
     name = Column(String(50), nullable=False)
     email = Column(String(50), nullable=False)
-    password = Column(StringEncryptedType(String, length=255, key=ENCRYPTED_KEY, engine=AesEngine), primary_key=True, nullable=False)
+    password = Column(StringEncryptedType(String, length=255, key=ENCRYPTED_KEY, engine=AesEngine), nullable=False)
+
+
+index_cpf = Index('idx_reseller_cpf', Reseller.cpf)

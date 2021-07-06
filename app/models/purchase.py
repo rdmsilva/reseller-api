@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, Float, Date
+from sqlalchemy import Column, String, Integer, Float, Date, Index
 from sqlalchemy.orm import declarative_base
 from sqlalchemy_utils import StringEncryptedType
 from sqlalchemy_utils.types.encrypted.encrypted_type import AesEngine
@@ -16,5 +16,8 @@ class Purchase(BasePurchase, BaseModel):
     code = Column(String(30), nullable=False)
     value = Column(Float, nullable=False)
     date = Column(Date, nullable=False)
-    cpf = Column(StringEncryptedType(Integer, length=255, key=ENCRYPTED_KEY, engine=AesEngine), primary_key=True, nullable=False)
+    cpf = Column(StringEncryptedType(Integer, length=255, key=ENCRYPTED_KEY, engine=AesEngine), nullable=False)
     status = Column(String(15), nullable=False)
+
+
+index_cpf = Index('idx_purchase_cpf', Purchase.cpf)
