@@ -4,8 +4,8 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 
 from app.views.auth import auth
-from app.views.purchase import purchase
-from app.views.reseller import reseller
+from app.views.purchases import purchase
+from app.views.resellers import reseller
 from settings import JWT_SECRET_KEY
 
 

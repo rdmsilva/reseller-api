@@ -1,17 +1,14 @@
 from contextlib import contextmanager
 from uuid import UUID
 
-from sqlalchemy import create_engine, Column, DateTime, Boolean
+from sqlalchemy import create_engine, Column, DateTime
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy_serializer import SerializerMixin
 
 from log import logger
 from settings import DB_URI
 
-database_uri = DB_URI
-
-engine = create_engine(database_uri)
-
+engine = create_engine(DB_URI)
 session_factory = sessionmaker(bind=engine)
 Session = scoped_session(session_factory)
 

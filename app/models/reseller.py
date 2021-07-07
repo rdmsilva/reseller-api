@@ -19,6 +19,3 @@ class Reseller(BaseReseller, BaseModel):
     name = Column(String(50), nullable=False)
     email = Column(String(50), nullable=False)
     password = Column(StringEncryptedType(String, length=255, key=ENCRYPTED_KEY, engine=AesEngine), nullable=False)
-
-
-index_cpf = Index('idx_reseller_cpf', Reseller.cpf)

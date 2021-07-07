@@ -12,6 +12,8 @@ BasePurchase = declarative_base()
 class Purchase(BasePurchase, BaseModel):
     __tablename__ = 'purchase'
 
+    serialize_only = ('code', 'value', 'date', 'status')
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     code = Column(String(30), nullable=False)
     value = Column(Float, nullable=False)
