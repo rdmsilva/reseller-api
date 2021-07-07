@@ -1,11 +1,14 @@
 from datetime import datetime
-
-from sqlalchemy.exc import IntegrityError
+from http import HTTPStatus
 
 from app.exceptions import CustomException
+from flask import jsonify
+from sqlalchemy.exc import IntegrityError
+
 from app.models.app_models import Purchase
 from app.models.base import context_session
 from app.schemas.purchase import PurchaseSchema
+from app.services.reseller import get_reseller_by_cpf
 
 ON_APPROVAL = 'Em validação'
 APPROVED = 'Aprovado'
@@ -32,7 +35,7 @@ def apply_benefits(purchase: dict):
         cashback = purchase_value * (percent / 100)
 
     purchase['percent'] = percent
-    purchase['cashback'] = cashback
+    purchase['cashback'] = round(cashback, 2)
 
     return purchase
 
@@ -49,15 +52,9 @@ def save_new_purchase(data: dict):
     return purchase.id
 
 
-def find_all_purchase(cpf):
-    with context_session() as session:
-        filter_args = []
-        if cpf:
-            filter_args.append(Purchase.cpf == cpf)
-
-        purchases = session.query(Purchase).filter(*filter_args).all()
-
-        return list(map(lambda _: apply_benefits(_.to_dict()), purchases))
+def find_all_purchases(reseller_cpf):
+    reseller = get_reseller_by_cpf(reseller_cpf)
+    return list(map(lambda _: apply_benefits(_.to_dict()), reseller.purchases))
 
 
 def find_purchase_by_id(purchase_id):
@@ -65,14 +62,44 @@ def find_purchase_by_id(purchase_id):
         return session.query(Purchase).filter_by(id=purchase_id).first()
 
 
-def update_purchase(actual: Purchase, new_data: dict):
+def validated_auth_cpf(auth_cpf, current_cpf):
+    if auth_cpf != current_cpf:
+        return jsonify(msg='purchase cpf must be the same that reseller'), HTTPStatus.UNAUTHORIZED
+
+
+def update_purchase(new_data: dict, auth_cpf: int):
+    if validated_auth_cpf(auth_cpf, int(new_data['cpf'])):
+        return jsonify(msg='purchase cpf must be the same that reseller'), HTTPStatus.UNAUTHORIZED
+
+    status = new_data.get('status')
+    if status and status not in [APPROVED, ON_APPROVAL]:
+        return jsonify(msg='status not allowed'), HTTPStatus.BAD_REQUEST
+
+    actual = find_purchase_by_id(new_data['id'])
+
+    if not actual:
+        return jsonify(msg='purchase not found'), HTTPStatus.BAD_REQUEST
+
+    if actual.status == APPROVED:
+        return jsonify(msg='purchase is already approved'), HTTPStatus.BAD_REQUEST
+
     for k, v in new_data.items():
         actual.__setattr__(k, v)
+
     actual.save()
-    return actual
+
+    return jsonify(actual.to_dict()), HTTPStatus.OK
 
 
-def delete_purchase(purchase_id):
+def delete_purchase(purchase_id, auth_cpf):
     with context_session() as session:
         purchase = session.query(Purchase).filter_by(id=purchase_id).first()
+
+        if not purchase:
+            return jsonify(msg='purchase not found'), HTTPStatus.BAD_REQUEST
+
+        if not purchase.cpf == auth_cpf:
+            return jsonify(msg='purchase cpf must be the same that reseller'), HTTPStatus.UNAUTHORIZED
+
         purchase.delete()
+        return jsonify(msg='purchase deleted'), HTTPStatus.OK

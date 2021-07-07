@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Integer, Float, Date, Index, ForeignKey
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy_utils import StringEncryptedType
 from sqlalchemy_utils.types.encrypted.encrypted_type import AesEngine
 
@@ -21,6 +21,8 @@ class Reseller(Base, BaseModel):
     email = Column(String(50), nullable=False)
     password = Column(StringEncryptedType(String, length=255, key=ENCRYPTED_KEY, engine=AesEngine), nullable=False)
 
+    purchases = relationship('Purchase', back_populates='reseller', cascade='delete')
+
 
 class Purchase(Base, BaseModel):
     __tablename__ = 'purchase'
@@ -31,10 +33,10 @@ class Purchase(Base, BaseModel):
     code = Column(String(30), nullable=False)
     value = Column(Float, nullable=False)
     date = Column(Date, nullable=False)
-    # cpf = Column(StringEncryptedType(Integer, length=255, key=ENCRYPTED_KEY, engine=AesEngine), nullable=False)
     status = Column(String(15), nullable=False)
 
     cpf = Column(StringEncryptedType(Integer, length=255, key=ENCRYPTED_KEY, engine=AesEngine), ForeignKey('reseller.cpf'), nullable=False)
+    reseller = relationship('Reseller', backref='reseller', lazy=True)
 
 
 index_cpf = Index('idx_purchase_cpf', Purchase.cpf)

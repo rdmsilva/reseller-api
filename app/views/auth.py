@@ -21,6 +21,6 @@ def login():
         return jsonify(msg='user not found'), HTTPStatus.UNAUTHORIZED
 
     if password_is_valid(auth.password, user):
-        return jsonify(token=create_access_token(identity=user.id), id=user.id)
+        return jsonify(token=create_access_token(identity=user.cpf), id=user.id)
 
     return jsonify(msg='user or password is wrong'), HTTPStatus.UNAUTHORIZED

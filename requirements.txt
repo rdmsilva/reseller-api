@@ -13,3 +13,4 @@ PyJWT
 flask-jwt-extended
 requests
 gunicorn
+coverage

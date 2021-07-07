@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from app.models.purchase import Purchase
+from app.models.app_models import Purchase
 from app.services.purchase import apply_benefits, apply_status, ON_APPROVAL, APPROVED, APPROVED_CPF
 
 

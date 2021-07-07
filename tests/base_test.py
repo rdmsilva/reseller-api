@@ -17,7 +17,7 @@ class BaseApiTestCase(TestCase):
         app.config['DEBUG'] = True
 
         with app.test_request_context():
-            token = create_access_token(identity="test", expires_delta=False)
+            token = create_access_token(identity="15350946056", expires_delta=False)
             cls.headers = {
                 'Authorization': f'Bearer {token}'
             }

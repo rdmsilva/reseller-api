@@ -13,17 +13,6 @@ from settings import CASHBACK_URL, TOKEN_CASHBACK
 reseller = Blueprint('resellers', __name__, url_prefix='/v1')
 
 
-@reseller.route('/resellers/<id>', methods=['GET'])
-@jwt_required()
-def get_reseller(id):
-    result = get_reseller_by_id(id)
-
-    if not result:
-        return jsonify(msg='reseller not found'), HTTPStatus.NOT_FOUND
-
-    return jsonify(result.to_dict())
-
-
 @reseller.route('/resellers/<id>/cashback', methods=['GET'])
 @jwt_required()
 def cashback(id):
