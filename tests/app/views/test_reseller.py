@@ -1,5 +1,4 @@
 from http import HTTPStatus
-from json import loads
 from random import randint
 
 from tests.base_test import BaseApiTestCase
@@ -28,3 +27,10 @@ class ResellerTest(BaseApiTestCase):
 
         response = self.client.post(self.reseller_route)
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+
+    def test_400_amount_cashback(self):
+        response = self.client.post(self.reseller_route, json={'data': self.default_data})
+        self.assertEqual(response.status_code, HTTPStatus.CREATED)
+
+        response = self.client.get(f'{self.reseller_route}/1/cashback', headers=self.headers)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
