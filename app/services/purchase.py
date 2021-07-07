@@ -75,7 +75,7 @@ def update_purchase(new_data: dict, auth_cpf: int):
     if status and status not in [APPROVED, ON_APPROVAL]:
         return jsonify(msg='status not allowed'), HTTPStatus.BAD_REQUEST
 
-    actual = find_purchase_by_id(new_data['id'])
+    actual = find_purchase_by_id(int(new_data['id']))
 
     if not actual:
         return jsonify(msg='purchase not found'), HTTPStatus.BAD_REQUEST

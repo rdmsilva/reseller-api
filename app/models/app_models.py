@@ -21,7 +21,7 @@ class Reseller(Base, BaseModel):
     email = Column(String(50), nullable=False)
     password = Column(StringEncryptedType(String, length=255, key=ENCRYPTED_KEY, engine=AesEngine), nullable=False)
 
-    purchases = relationship('Purchase', back_populates='reseller', cascade='delete')
+    purchases = relationship('Purchase', backref='reseller')
 
 
 class Purchase(Base, BaseModel):
@@ -36,7 +36,6 @@ class Purchase(Base, BaseModel):
     status = Column(String(15), nullable=False)
 
     cpf = Column(StringEncryptedType(Integer, length=255, key=ENCRYPTED_KEY, engine=AesEngine), ForeignKey('reseller.cpf'), nullable=False)
-    reseller = relationship('Reseller', backref='reseller', lazy=True)
 
 
 index_cpf = Index('idx_purchase_cpf', Purchase.cpf)

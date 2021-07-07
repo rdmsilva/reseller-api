@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from app.schemas.purchase import PurchaseSchema
 from app.services.purchase import save_new_purchase, update_purchase, delete_purchase, \
-    find_all_purchases, validated_auth_cpf
+    find_all_purchases
 
 purchase = Blueprint('purchases', __name__, url_prefix='/v1')
 
@@ -18,10 +18,7 @@ def get_all_purchase():
 
     result = find_all_purchases(auth_cpf)
 
-    if not result:
-        return jsonify(body=[], msg='reseller does not have purchases'), HTTPStatus.OK
-
-    return jsonify(body=result), HTTPStatus.OK
+    return jsonify(result), HTTPStatus.OK
 
 
 @purchase.route('/purchases', methods=['POST'])
@@ -39,7 +36,7 @@ def post_purchase():
 
     auth_cpf = get_jwt_identity()
 
-    if auth_cpf != int(data['cpf']):
+    if not auth_cpf == int(data['cpf']):
         return jsonify(msg='purchase cpf must be the same that reseller'), HTTPStatus.UNAUTHORIZED
 
     purchase_id = save_new_purchase(data)
@@ -56,6 +53,11 @@ def put_purchase():
 
     auth_cpf = get_jwt_identity()
     data = request.json.get('data')
+
+    errors = PurchaseSchema().validate(data)
+    if errors:
+        return jsonify(msg=errors), HTTPStatus.BAD_REQUEST
+
     response = update_purchase(data, auth_cpf)
     return response
 

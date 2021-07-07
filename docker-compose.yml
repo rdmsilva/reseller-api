@@ -2,17 +2,17 @@ version: '3.6'
 
 services:
 
-#  app:
-#    build: .
-#    command: [ "./wait-for-it.sh", "db:3306", "--", "bash", "app.sh" ]
-#    restart: always
-#    ports:
-#      - 5000:5000
-#    depends_on:
-#      - db
-#      - adminer
-#    networks:
-#      - backend
+  app:
+    build: .
+    command: [ "./wait-for-it.sh", "db:3306", "--", "bash", "app.sh" ]
+    restart: always
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+      - adminer
+    networks:
+      - backend
 
   db:
     image: mysql
