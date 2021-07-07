@@ -2,6 +2,18 @@ version: '3.6'
 
 services:
 
+#  app:
+#    build: .
+#    command: [ "./wait-for-it.sh", "db:3306", "--", "bash", "app.sh" ]
+#    restart: always
+#    ports:
+#      - 5000:5000
+#    depends_on:
+#      - db
+#      - adminer
+#    networks:
+#      - backend
+
   db:
     image: mysql
     ports:
@@ -13,9 +25,11 @@ services:
       MYSQL_PASSWORD: dev
       MYSQL_DATABASE: reseller-db
     networks:
-      - reseller-nw
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      - backend
+    volumes:
+      - db-mysql:/var/lib/mysql
+    security_opt:
+      - seccomp:unconfined
 
   adminer:
     image: adminer
@@ -25,20 +39,9 @@ services:
     depends_on:
       - db
     networks:
-      - reseller-nw
-
-  app:
-    build: .
-    command: ["./wait-for-it.sh", "db:3306", "--", "bash", "app.sh"]
-    restart: always
-    ports:
-      - 5000:5000
-    depends_on:
-      - db
-      - adminer
-    networks:
-      - reseller-nw
+      - backend
 
 networks:
-  reseller-nw:
-    name: reseler-nw
+  backend:
+volumes:
+  db-mysql:

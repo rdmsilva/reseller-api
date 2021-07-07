@@ -5,7 +5,7 @@ from flask import Blueprint, request
 from flask import jsonify
 from flask_jwt_extended import jwt_required
 
-from app.models.reseller import Reseller
+from app.models.app_models import Reseller
 from app.schemas.reseller import ResellerSchema
 from app.services.reseller import get_reseller_by_id, save_new_reseller
 from settings import CASHBACK_URL, TOKEN_CASHBACK
@@ -36,7 +36,7 @@ def cashback(id):
         response = requests.get(f'{CASHBACK_URL}?cpf={reseller.cpf}', headers={'token': TOKEN_CASHBACK})
         contents = response.json()
         return jsonify(contents['body']), HTTPStatus.OK
-    except:
+    except Exception:
         return jsonify(msg='service unavailable'), HTTPStatus.SERVICE_UNAVAILABLE
 
 

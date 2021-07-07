@@ -1,15 +1,22 @@
 import hashlib
 from datetime import datetime
 
+from sqlalchemy.exc import IntegrityError
+
+from app.exceptions import CustomException
+from app.models.app_models import Reseller
 from app.models.base import context_session
-from app.models.reseller import Reseller
 from settings import SALT
 
 
 def save_new_reseller(reseller: Reseller):
-    reseller.password = generate_hash_password(reseller.password)
-    reseller.created_at = datetime.now()
-    reseller.save()
+    try:
+        reseller.password = generate_hash_password(reseller.password)
+        reseller.created_at = datetime.now()
+        reseller.save()
+    except IntegrityError:
+        raise CustomException(msg='CPF already registered', status_code=400)
+
     return reseller.id
 
 

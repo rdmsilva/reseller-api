@@ -1,7 +1,10 @@
 from datetime import datetime
 
+from sqlalchemy.exc import IntegrityError
+
+from app.exceptions import CustomException
+from app.models.app_models import Purchase
 from app.models.base import context_session
-from app.models.purchase import Purchase
 from app.schemas.purchase import PurchaseSchema
 
 ON_APPROVAL = 'Em validação'
@@ -35,10 +38,14 @@ def apply_benefits(purchase: dict):
 
 
 def save_new_purchase(data: dict):
-    purchase = Purchase(**PurchaseSchema().load(data))
-    purchase.created_at = datetime.now()
-    purchase.status = apply_status(purchase)
-    purchase.save()
+    try:
+        purchase = Purchase(**PurchaseSchema().load(data))
+        purchase.created_at = datetime.now()
+        purchase.status = apply_status(purchase)
+        purchase.save()
+    except IntegrityError:
+        raise CustomException(msg="CPF not registered for a reseller", status_code=400)
+
     return purchase.id
 
 

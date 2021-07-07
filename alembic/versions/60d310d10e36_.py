@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 35357f5eec19
+Revision ID: 60d310d10e36
 Revises: 
-Create Date: 2021-07-06 14:28:25.752009
+Create Date: 2021-07-07 11:58:09.855056
 
 """
 import sqlalchemy_utils
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '35357f5eec19'
+revision = '60d310d10e36'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -35,8 +35,9 @@ def upgrade():
     sa.Column('code', sa.String(length=30), nullable=False),
     sa.Column('value', sa.Float(), nullable=False),
     sa.Column('date', sa.Date(), nullable=False),
-    sa.Column('cpf', sqlalchemy_utils.types.encrypted.encrypted_type.StringEncryptedType(length=255), nullable=False),
     sa.Column('status', sa.String(length=15), nullable=False),
+    sa.Column('cpf', sqlalchemy_utils.types.encrypted.encrypted_type.StringEncryptedType(length=255), nullable=False),
+    sa.ForeignKeyConstraint(['cpf'], ['reseller.cpf'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index('idx_purchase_cpf', 'purchase', ['cpf'], unique=False)
