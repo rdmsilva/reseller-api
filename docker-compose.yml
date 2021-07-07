@@ -12,9 +12,33 @@ services:
       MYSQL_USER: dev
       MYSQL_PASSWORD: dev
       MYSQL_DATABASE: reseller-db
+    networks:
+      - reseller-nw
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+    depends_on:
+      - db
+    networks:
+      - reseller-nw
+
+  app:
+    build: .
+    command: ["./wait-for-it.sh", "db:3306", "--", "bash", "app.sh"]
+    restart: always
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+      - adminer
+    networks:
+      - reseller-nw
+
+networks:
+  reseller-nw:
+    name: reseler-nw

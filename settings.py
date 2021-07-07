@@ -3,6 +3,7 @@ import os
 from config import config_app
 
 ENV = os.getenv('env', 'dev')
+
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 PROJECT = 'reseller-api'

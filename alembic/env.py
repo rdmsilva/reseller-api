@@ -62,13 +62,12 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
-    connectable = engine_from_config(
-        config.get_section(config.config_ini_section),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
-    )
+    alembic_config = config.get_section(config.config_ini_section)
+    alembic_config['sqlalchemy.url'] = settings.DB_URI
 
-    with connectable.connect() as connection:
+    engine = engine_from_config(alembic_config)
+
+    with engine.connect() as connection:
         context.configure(
             connection=connection, target_metadata=target_metadata
         )
