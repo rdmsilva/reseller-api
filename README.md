@@ -1,10 +1,10 @@
 # Reseller-api
-![#](https://img.shields.io/badge/python-3.7.9-yellow.svg)
-![#](https://img.shields.io/badge/flask-2.0.1-mediumvioletred.svg) 
-![#](https://img.shields.io/badge/sqlalchemy-1.4.20-green.svg) 
+![#](https://img.shields.io/badge/python-3.7.9-blue.svg)
+![#](https://img.shields.io/badge/flask-2.0.1-blue.svg) 
+![#](https://img.shields.io/badge/sqlalchemy-1.4.20-blue.svg) 
 ![#](https://img.shields.io/badge/alembic-1.6.5-blue.svg) 
-![#](https://img.shields.io/badge/docker-20.10.7-red.svg)
-![#](https://img.shields.io/badge/docker_compose-1.29.2-red.svg)
+![#](https://img.shields.io/badge/docker-20.10.7-blue.svg)
+![#](https://img.shields.io/badge/docker_compose-1.29.2-blue.svg)
 
 ## Application to register resellers and purchases.
 
@@ -288,3 +288,6 @@ Bearer token and purchase id is required.
   "msg": "{{error message}}"
 }
 ```
+
+### Author
+#### [![Linkedin Badge](https://img.shields.io/badge/-Rafael_Dantas-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/rafael-dantas-18142291/)](https://www.linkedin.com/in/rafael-dantas-18142291/)
