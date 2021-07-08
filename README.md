@@ -259,3 +259,32 @@ Bearer token and purchase id is required.
   "msg": "{{error message}}"
 }
 ```
+
+
+### Delete Purchase
+
+---
+`DELETE /v1/purchases/<purchase_id>`
+
+Bearer token and purchase id is required.
+
+    curl --location --request DELETE 'localhost:5000/v1/purchases/1' \
+    --header 'Authorization: Bearer {{token}}'
+
+#### Success:
+- Code: 200
+- Content:
+```json
+{
+    "msg": "purchase deleted"
+}
+```
+
+#### Error:
+- Code: 400 | 401
+- Content:
+```json
+{
+  "msg": "{{error message}}"
+}
+```
