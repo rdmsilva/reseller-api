@@ -125,7 +125,7 @@ Baisc Auth is required in header.
 ---
 `POST /v1/resellers/<reseller_id>/cashback`
 
-Bearer token and reseller_id is requrired.
+Bearer token and reseller_id are requrired.
 
     curl --location --request GET 'localhost:5000/v1/resellers/1/cashback' \
     --header 'Authorization: Bearer {{token}}'
@@ -193,7 +193,7 @@ Bearer token and all data fields are required.
 ---
 `GET /v1/purchases`
 
-Bearer token are required.
+Bearer token is required.
 
     curl --location --request GET 'localhost:5000/v1/purchases' --header 'Authorization: Bearer {{token}}'
 
@@ -228,7 +228,7 @@ Bearer token are required.
 ---
 `PUT /v1/purchases/<purchase_id>`
 
-Bearer token and purchase id is required.
+Bearer token and purchase id are required.
 
     curl --location --request PUT 'localhost:5000/v1/purchases/1' \
     --header 'Authorization: Bearer {{token}}' \
@@ -266,7 +266,7 @@ Bearer token and purchase id is required.
 ---
 `DELETE /v1/purchases/<purchase_id>`
 
-Bearer token and purchase id is required.
+Bearer token and purchase id are required.
 
     curl --location --request DELETE 'localhost:5000/v1/purchases/1' \
     --header 'Authorization: Bearer {{token}}'
