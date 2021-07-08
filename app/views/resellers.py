@@ -15,7 +15,7 @@ reseller = Blueprint('resellers', __name__, url_prefix='/v1')
 
 @reseller.route('/resellers/<id>/cashback', methods=['GET'])
 @jwt_required()
-def cashback(id):
+def get_cashback(id):
     reseller = get_reseller_by_id(id)
 
     if not reseller:

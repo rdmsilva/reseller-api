@@ -2,7 +2,7 @@ import os
 
 from config import config_app
 
-ENV = os.getenv('env', 'local')
+ENV = os.getenv('ENV', 'local')
 
 ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 

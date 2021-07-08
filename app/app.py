@@ -11,7 +11,7 @@ from settings import JWT_SECRET_KEY
 
 def config_jwt(app):
     app.config['JWT_SECRET_KEY'] = JWT_SECRET_KEY
-    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)  # todo: move to config, refresh token
     JWTManager(app)
 
 

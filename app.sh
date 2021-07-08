@@ -1,7 +1,6 @@
 #!/bin/bash
 
 echo "upgrade database"
-
 alembic revision --autogenerate
 alembic upgrade head
 
