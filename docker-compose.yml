@@ -26,8 +26,6 @@ services:
       MYSQL_DATABASE: reseller-db
     networks:
       - backend
-    volumes:
-      - db-mysql:/var/lib/mysql
     security_opt:
       - seccomp:unconfined
 
@@ -43,5 +41,3 @@ services:
 
 networks:
   backend:
-volumes:
-  db-mysql:
