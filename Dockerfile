@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.7.9
 WORKDIR /usr/src
 
 ENV ENV=docker

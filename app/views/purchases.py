@@ -15,9 +15,7 @@ purchase = Blueprint('purchases', __name__, url_prefix='/v1')
 @jwt_required()
 def get_all_purchase():
     auth_cpf = get_jwt_identity()
-
     result = find_all_purchases(auth_cpf)
-
     return jsonify(result), HTTPStatus.OK
 
 
@@ -30,12 +28,10 @@ def post_purchase():
     data = request.json.get('data')
 
     errors = PurchaseSchema().validate(data)
-
     if errors:
         return jsonify(msg=errors), HTTPStatus.BAD_REQUEST
 
     auth_cpf = get_jwt_identity()
-
     if not auth_cpf == int(data['cpf']):
         return jsonify(msg='purchase cpf must be the same that reseller'), HTTPStatus.UNAUTHORIZED
 
@@ -45,20 +41,16 @@ def post_purchase():
     return jsonify(msg='saved', id=purchase_id), status_code
 
 
-@purchase.route('/purchases', methods=['PUT'])
+@purchase.route('/purchases/<purchase_id>', methods=['PUT'])
 @jwt_required()
-def put_purchase():
-    if not request.is_json:
+def put_purchase(purchase_id):
+    if not request.is_json or not request.json.get('data'):
         return jsonify(msg='no body request'), HTTPStatus.BAD_REQUEST
 
     auth_cpf = get_jwt_identity()
     data = request.json.get('data')
 
-    errors = PurchaseSchema().validate(data)
-    if errors:
-        return jsonify(msg=errors), HTTPStatus.BAD_REQUEST
-
-    response = update_purchase(data, auth_cpf)
+    response = update_purchase(data, auth_cpf, purchase_id)
     return response
 
 

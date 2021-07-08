@@ -67,21 +67,21 @@ def validated_auth_cpf(auth_cpf, current_cpf):
         return jsonify(msg='purchase cpf must be the same that reseller'), HTTPStatus.UNAUTHORIZED
 
 
-def update_purchase(new_data: dict, auth_cpf: int):
-    if validated_auth_cpf(auth_cpf, int(new_data['cpf'])):
-        return jsonify(msg='purchase cpf must be the same that reseller'), HTTPStatus.UNAUTHORIZED
-
+def update_purchase(new_data: dict, auth_cpf: int, purchase_id: int):
     status = new_data.get('status')
     if status and status not in [APPROVED, ON_APPROVAL]:
         return jsonify(msg='status not allowed'), HTTPStatus.BAD_REQUEST
 
-    actual = find_purchase_by_id(int(new_data['id']))
+    actual = find_purchase_by_id(purchase_id)
 
     if not actual:
         return jsonify(msg='purchase not found'), HTTPStatus.BAD_REQUEST
 
     if actual.status == APPROVED:
         return jsonify(msg='purchase is already approved'), HTTPStatus.BAD_REQUEST
+
+    if validated_auth_cpf(auth_cpf, actual.cpf):
+        return jsonify(msg='purchase cpf must be the same that reseller'), HTTPStatus.UNAUTHORIZED
 
     for k, v in new_data.items():
         actual.__setattr__(k, v)
