@@ -95,8 +95,7 @@ All data fields are required.
 
 Baisc Auth is required in header.
 
-    curl --location --request POST 'localhost:5000/v1/auth' \
-    --header 'Authorization: Basic {{basic}}'
+    curl --user 12345678900:123456 --location --request POST 'localhost:5000/v1/auth'
 
 ### Responses
 
