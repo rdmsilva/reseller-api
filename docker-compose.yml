@@ -5,7 +5,7 @@ services:
   app:
     build: .
     command: [ "./wait-for-it.sh", "db:3306", "--", "bash", "app.sh" ]
-    restart: always
+    restart: "no"
     ports:
       - 5000:5000
     depends_on:
@@ -18,7 +18,7 @@ services:
     image: mysql
     ports:
       - 3306:3306
-    restart: always
+    restart: "no"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: dev
@@ -31,7 +31,7 @@ services:
 
   adminer:
     image: adminer
-    restart: always
+    restart: "no"
     ports:
       - 8080:8080
     depends_on:
